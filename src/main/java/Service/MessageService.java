@@ -12,8 +12,8 @@ import Model.Account;
 import Model.Message;
 import io.javalin.http.NotFoundResponse;
 
-/* The Service class contains the business logic for the Message objects and sits between the web layer (controller)
-    and the persistence layer (DAO).
+/**
+ * This class is responsible for handling business logic for Message objects.
  */
 
 public class MessageService {
@@ -33,12 +33,11 @@ public class MessageService {
     }
 
     /**
-     * Retrieve a Message by its ID using the MessageDao
+     * Retrieve a Message by its ID using the MessageDao.
      *
      * @param id The ID of the Message
      * @return Optional containing the found Message
-     * @throws ServiceException If the Message is not found or there is a DAO
-     *                          exception
+     * @throws ServiceException If the Message is not found or there is a DAO exception
      */
     public Optional<Message> getMessageById(int id) {
         LOGGER.info("Fetching message with ID: {} ", id);
@@ -55,7 +54,7 @@ public class MessageService {
     }
 
     /**
-     * Retrieve all messages using the MessageDao
+     * Retrieve all messages using the MessageDao.
      *
      * @return List of all Messages
      * @throws ServiceException If there is a DAO exception
@@ -72,10 +71,10 @@ public class MessageService {
     }
 
     /**
-     * Retrieve all messages posted by a specific account
+     * Retrieve all messages posted by an account using the MessageDao.
      *
-     * @param accountId The ID of the account
-     * @return List of Messages posted by the account
+     * @param accountId The ID of the Account
+     * @return List of all Messages posted by the Account
      * @throws ServiceException If there is a DAO exception
      */
     public List<Message> getMessagesByAccountId(int accountId) {
@@ -90,12 +89,12 @@ public class MessageService {
     }
 
     /**
-     * Insert a new message into the database using the MessageDao.
+     * Create a new message in the database using the MessageDao.
      * Checks account permissions to ensure that only the message author can create
-     * messages on their behalf.
+     * messages.
      *
      * @param message The Message to create
-     * @param account The Account creating the Message
+     * @param account The Account that is creating the message
      * @return The created Message
      * @throws ServiceException If the Account does not exist, the Message is not
      *                          valid, or there is a DAO exception
@@ -128,10 +127,10 @@ public class MessageService {
      * Checks account permissions to ensure that only the message author can update
      * their own messages.
      *
-     * @param message The Message to update
+     * @param message The updated Message
      * @return The updated Message
-     * @throws ServiceException If the Message does not exist, is not valid, or
-     *                          there is a DAO exception
+     * @throws ServiceException If the Message does not exist, the Message is not
+     *                          valid, or there is a DAO exception
      */
     public Message updateMessage(Message message) {
         LOGGER.info("Updating message: {}", message.getMessage_id());
@@ -161,12 +160,13 @@ public class MessageService {
     }
 
     /**
-     * Delete an existing message from the database.
-     * Check account permissions to ensure that only the message author can delete
+     * Delete an existing message in the database using the MessageDao.
+     * Checks account permissions to ensure that only the message author can delete
      * their own messages.
      *
      * @param message The Message to delete
-     * @throws ServiceException If the Message does not exist or there is a DAO
+     * @throws ServiceException If the Message does not exist, the Account is not
+     *                          authorized to delete the Message, or there is a DAO
      *                          exception
      */
     public void deleteMessage(Message message) {
@@ -184,12 +184,10 @@ public class MessageService {
     }
 
     /**
-     * Validate a message by checking if the message_text is null, empty, or
-     * exceed the maximum allowed length.
+     * Validate a message to ensure it meets the required criteria.
      *
-     * @param message The Message to validate
-     * @throws ServiceException If the message is null, empty, or exceeds the
-     *                          maximum length
+     * @param message The message to validate
+     * @throws ServiceException If the message is invalid
      */
     private void validateMessage(Message message) {
         LOGGER.info("Validating message: {}", message);
@@ -202,13 +200,11 @@ public class MessageService {
     }
 
     /**
-     * Check if the account performing the action is the same as the one that posted
-     * the message. This is used to maintain user data integrity and security.
+     * Check if an account has permission to modify a message.
      *
-     * @param account  The Account that is performing the action
-     * @param postedBy The ID of the account that posted the message
-     * @throws ServiceException If the account is not authorized to modify the
-     *                          message
+     * @param account   The Account to check
+     * @param postedBy  The ID of the Account that posted the message
+     * @throws ServiceException If the Account is not authorized to modify the message
      */
     private void checkAccountPermission(Account account, int postedBy) {
         LOGGER.info("Checking account permissions for messages");

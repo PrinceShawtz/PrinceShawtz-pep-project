@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * This class represents a Data Access Object (DAO) for managing Account objects.
+ */
 public class AccountDao implements BaseDao<Account> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountDao.class);
@@ -61,8 +64,7 @@ public class AccountDao implements BaseDao<Account> {
     /**
      * Retrieves all accounts from the database.
      *
-     * @return A List of Account objects. If no accounts are found, an empty list is
-     *         returned.
+     * @return A List of all accounts.
      */
     @Override
     public List<Account> getAll() {
@@ -114,11 +116,11 @@ public class AccountDao implements BaseDao<Account> {
     }
 
     /**
-     * Validates the login credentials by checking if the provided username and
-     * password match an account in the database.
+     * Validates a login attempt by checking if the provided username and password
+     * match an account in the database.
      *
-     * @param username The username of the account.
-     * @param password The password of the account.
+     * @param username The username to validate.
+     * @param password The password to validate.
      * @return An Optional object, which will contain the account if the login was
      *         successful, otherwise it will be empty.
      */
@@ -152,7 +154,7 @@ public class AccountDao implements BaseDao<Account> {
      * Checks if a username already exists in the database.
      *
      * @param username The username to check.
-     * @return true if the username already exists in the database; false otherwise.
+     * @return true if the username exists; false otherwise.
      */
     public boolean doesUsernameExist(String username) {
         String sql = "SELECT COUNT(*) FROM account WHERE username = ?";
@@ -176,7 +178,7 @@ public class AccountDao implements BaseDao<Account> {
      * Inserts a new account into the database.
      *
      * @param account The account object to insert.
-     * @return The account object that was inserted, including its generated ID.
+     * @return The account object that was inserted into the database.
      * @throws DaoException if an error occurs during the insertion.
      */
     @Override
@@ -203,7 +205,7 @@ public class AccountDao implements BaseDao<Account> {
     }
 
     /**
-     * Updates an existing account in the database.
+     * Updates an account in the database.
      *
      * @param account The account object to update.
      * @return true if the update was successful; false otherwise.
@@ -232,7 +234,7 @@ public class AccountDao implements BaseDao<Account> {
      * Deletes an account from the database.
      *
      * @param account The account object to delete.
-     * @return true if the delete was successful; false otherwise.
+     * @return true if the deletion was successful; false otherwise.
      * @throws DaoException if an error occurs during the deletion.
      */
     @Override

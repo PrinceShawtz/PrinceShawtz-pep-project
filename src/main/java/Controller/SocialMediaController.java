@@ -62,8 +62,8 @@ public class SocialMediaController {
     }
 
     /**
-     * This method handles the registration process for new users.
-     * It expects a POST request to "/register" with the new account details in the
+     * This method handles the registration of new accounts.
+     * It expects a POST request to "/register" with the account details in the
      * request body.
      *
      * @param ctx the Javalin context object representing the current HTTP request
@@ -86,9 +86,9 @@ public class SocialMediaController {
     }
 
     /**
-     * This method handles the login process for users.
-     * It expects a POST request to "/login" with the account credentials in the
-     * request body.
+     * This method handles the login of an account.
+     * It expects a POST request to "/login" with the account details in the request
+     * body.
      *
      * @param ctx the Javalin context object representing the current HTTP request
      *            and response
@@ -120,7 +120,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This method handles the creation of new messages.
+     * This method handles the creation of a new message.
      * It expects a POST request to "/messages" with the message details in the
      * request body.
      *
@@ -145,7 +145,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This method retrieves all messages.
+     * This method handles the retrieval of all messages.
      * It expects a GET request to "/messages".
      *
      * @param ctx the Javalin context object representing the current HTTP request
@@ -158,7 +158,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This method handles the retrieval of a specific message by its ID.
+     * This method retrieves a specific message by its ID.
      * It expects a GET request to "/messages/{message_id}".
      *
      * @param ctx the Javalin context object representing the current HTTP request
@@ -170,22 +170,17 @@ public class SocialMediaController {
             int id = Integer.parseInt(ctx.pathParam("message_id"));
             Optional<Message> message = messageService.getMessageById(id);
             if (message.isPresent()) {
-                ctx.json(message.get());
+                ctx.json(message.get()); // Respond with the message as a JSON object.
             } else {
-                // If the message is not found, set the response status to 200 (OK)
-                ctx.status(200); // As per test expectations, return a 200 status even if the message is not
-                                 // found.
-                ctx.result(""); // Response body is empty as the message was not found.
+                ctx.status(200); // Respond with a '200' status even if the message was not found.
+                ctx.result(""); // Response body is empty if the message was not found.
             }
-            // Catch block for NumberFormatException is required to handle cases where the
-            // 'message_id' path parameter cannot be parsed to an integer. Without this, an
-            // invalid 'message_id' could lead to unhandled exceptions and potential
-            // application crashes.
+            // Handle NumberFormatException for invalid 'message_id'.
         } catch (NumberFormatException e) {
-            ctx.status(400); // Respond with a 'Bad Request' status for invalid 'message_id'.
+            ctx.status(400); // Respond with a '400' status for a bad request.
         } catch (ServiceException e) {
-            ctx.status(200); // Respond with a '200' status even in case of a service error.
-            ctx.result(""); // Response body is empty as there was a service error.
+            ctx.status(200); // Respond with a '200' status even if there was a service error.
+            ctx.result(""); // Response body is empty if there was a service error.
         }
     }
 
@@ -222,9 +217,9 @@ public class SocialMediaController {
     }
 
     /**
-     * This method handles the update of a specific message by its ID.
-     * It expects a PATCH request to "/messages/{message_id}" with the new content
-     * of the message in the request body.
+     * This method updates a message with a specific ID.
+     * It expects a PATCH request to "/messages/{message_id}" with the updated
+     * message details in the request body.
      *
      * @param ctx the Javalin context object representing the current HTTP request
      *            and response
@@ -255,7 +250,7 @@ public class SocialMediaController {
     }
 
     /**
-     * This method retrieves all messages associated with a specific account ID.
+     * This method retrieves all messages posted by a specific account.
      * It expects a GET request to "/accounts/{account_id}/messages".
      *
      * @param ctx the Javalin context object representing the current HTTP request

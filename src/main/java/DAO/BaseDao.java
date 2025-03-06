@@ -4,49 +4,34 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This Generic Data Access Object (DAO) interface provides an abstraction for
- * performing CRUD (Create, Read, Update, Delete) operations
- * on any type of model object. Each model object can have a specific class
- * implementing this interface.
+ * This interface defines the standard operations to be performed on a model
+ * object in the system.
+ *
+ * @param <T> The type of the model object to be managed.
  */
 
 public interface BaseDao<T> {
-
-    /*
-     * Optional is used in the get method to handle the possibility that an account
-     * may not exists in the database.
-     * Instead of returning null, which can cause problems such as
-     * NullPointerExceptions, the method return an Optional <Account>.
-     *
-     * This Allows us to clearly communicate that an account might be absent and
-     * forces the calling code to handle this case explicitly.
-     */
-
     /**
-     * Retrieves an object by its id.
+     * Retrieves an object by its ID.
      *
-     * @param id The id of the object to retrieve.
-     * @return The object, if found, wrapped in an Optional; otherwise, an empty
-     *         Optional.
+     * @param id The ID of the object to retrieve.
+     * @return An Optional containing the object of type T if found, or an empty
+     *         Optional if the object is not found.
      */
     Optional<T> getById(int id);
 
     /**
-     * Retrieves all objects in the system.
+     * Retrieves all objects of type T from the system.
      *
-     * @return A List containing all instances of the model object T present in the
-     *         database. The order of the objects in the List matches the order of
-     *         the records in the
-     *         database.
+     * @return A List of all objects of type T.
      */
     List<T> getAll();
 
     /**
-     * Inserts a new object into the database.
+     * Inserts a new object into the system.
      *
      * @param t The object of type T to insert into the database.
-     * @return The inserted object, which may include modifications made by the
-     *         database, such as an auto-generated ID.
+     * @return The object of type T that was inserted into the database.
      */
     T insert(T t);
 
